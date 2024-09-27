@@ -19,7 +19,7 @@ namespace seneca{
 
     }
     Dictionary::Dictionary(const char *filename){
-        int index{};
+        size_t index{};
         ifstream file(filename);
         if (!file) {
             return;
@@ -131,24 +131,24 @@ namespace seneca{
     string Dictionary::transferPTypeToString(const PartOfSpeech pos) const {
         switch(pos) {
             case PartOfSpeech::Noun:
-                return "Noun";
+                return "noun";
             case PartOfSpeech::Pronoun:
-                return "Pronoun";
+                return "pronoun";
             case PartOfSpeech::Adjective:
-                return "Adjective";
+                return "adjective";
             case PartOfSpeech::Adverb:
-                return "Adverb";
+                return "adverb";
             case PartOfSpeech::Verb:
-                return "Verb";
+                return "verb";
             case PartOfSpeech::Preposition:
-                return "Preposition";
+                return "preposition";
             case PartOfSpeech::Conjunction:
-                return "Conjunction";
+                return "conjunction";
             case PartOfSpeech::Interjection:
-                return "Interjection";
+                return "interjection";
             case PartOfSpeech::Unknown:
             default:
-                return "Unknown";
+                return "unknown";
         }
     }
 
