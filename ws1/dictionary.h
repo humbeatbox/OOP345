@@ -47,7 +47,6 @@ namespace seneca{
         PartOfSpeech transfertoPType(const std::string)const;
         std::string transferPTypeToString(const PartOfSpeech)const;
 
-        friend std::ostream& operator<<(std::ostream&,const Dictionary&);
     };
 
 }

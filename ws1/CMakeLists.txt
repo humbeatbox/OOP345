@@ -3,7 +3,7 @@ project(ws1)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(ws1 main.cpp
+add_executable(ws1
         tester_1.cpp
         settings.cpp
         settings.h

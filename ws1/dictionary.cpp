@@ -4,13 +4,10 @@
 //2024-09-17 Creat this file
 //Done on
 
-//
-
-
 #include <fstream>
 #include <sstream>
 #include <iostream>
-#include <cstring>
+
 #include <iomanip>
 #include "dictionary.h"
 #include "settings.h"
@@ -18,10 +15,9 @@
 using namespace seneca;
 using namespace std;
 namespace seneca{
+    Dictionary::Dictionary() {
 
-    Dictionary::Dictionary(){}
-
-
+    }
     Dictionary::Dictionary(const char *filename){
         int index{};
         ifstream file(filename);
@@ -39,23 +35,16 @@ namespace seneca{
         m_words = new Word[m_size];
         while (getline(file, line)&& index<m_size ) {
 
-            std::stringstream ss(line);
-            std::string word, posStr, definition;
+            stringstream ss(line);
+            string word, posStr, definition;
 
-            std::getline(ss, word, ',');
-            std::getline(ss, posStr, ',');
-            std::getline(ss, definition);
-
+            getline(ss, word, ',');
+            getline(ss, posStr, ',');
+            getline(ss, definition);
 
             m_words[index].m_word = word;
             m_words[index].m_definition = definition;
-//            cout << "word is :" << m_words[index].m_word<< endl;
-//            cout << "def is :" << m_words[index].m_definition << endl;
-            //TODO make pos correct
             m_words[index].m_pos = transfertoPType(posStr);
-//            if(m_words[index].m_pos == PartOfSpeech::Unknown){
-//                cout << "pos is :" << "unknow" << endl;
-//            }
             index++;
 
         }
@@ -103,83 +92,41 @@ namespace seneca{
         return *this;
     }
 
-//            cout << "word is :" << m_words[i].m_word<< endl;
-//            cout << "def is :" << m_words[i].m_definition << endl;
-//            cout << "pos is :" << transferPTypeToString(m_words[i].m_pos) << endl;
     void Dictionary::searchWord(const char *word) const {
-        bool found = false;
-        cout << word;
+        bool ffound{};
+
         for(size_t i =0; i < m_size ;i++){
-            if(m_words[i].m_word == word){
-                found = true;
-                cout << setw(m_words[i].m_word.length()) << right <<" - (" << transferPTypeToString(m_words[i].m_pos) << ") " << m_words[i].m_definition << endl;
+            if(m_words[i].m_word == word){//match the word
+                if (!ffound) {//first time print. first line
+                    cout << m_words[i].m_word;
+                    if (g_settings.m_verbose && m_words[i].m_pos != PartOfSpeech::Unknown) {
+                        cout << " - (" << transferPTypeToString(m_words[i].m_pos) << ") ";
+                    } else {
+                        cout << " - ";
+                    }
+                    cout << m_words[i].m_definition << endl;
+                    ffound = true;
+                }else{//not first time print
+                    cout << setw(m_words[i].m_word.length()) << right << " " << " - " ;
+                    if (g_settings.m_verbose && m_words[i].m_pos != PartOfSpeech::Unknown) {
+                        cout << "(" << transferPTypeToString(m_words[i].m_pos) << ") ";
+                    }
+                    cout << m_words[i].m_definition << endl;
+                }
+                //if true will only show first line(stop the loop)
+                if(!g_settings.m_show_all){
+                    return;
+                }
+
             }
 
         }
-
-
-//        size_t wordLen = strlen(word);
-//        size_t indent = wordLen + 3; // For proper indentation
-/*
-        for (size_t i = 0; i < m_size; ++i) {
-//            if (strcasecmp((m_words[i].m_word).c_str(), word) == 0) {//compare the word
-            cout << m_words[i].m_word ;
-                if(m_words[i].m_word == word){
-
-                if (!found) {
-                    std::cout << m_words[i].m_word;
-//                    if (g_settings.m_verbose && m_words[i].m_pos != PartOfSpeech::Unknown) {
-//                        std::cout << " - (" << [this](PartOfSpeech pos) {
-//                            switch (pos) {
-//                                case PartOfSpeech::Noun: return "noun";
-//                                case PartOfSpeech::Pronoun: return "pronoun";
-//                                case PartOfSpeech::Adjective: return "adjective";
-//                                case PartOfSpeech::Adverb: return "adverb";
-//                                case PartOfSpeech::Verb: return "verb";
-//                                case PartOfSpeech::Preposition: return "preposition";
-//                                case PartOfSpeech::Conjunction: return "conjunction";
-//                                case PartOfSpeech::Interjection: return "interjection";
-//                                default: return "";
-//                            }
-//                        }(m_words[i].m_pos) << ")";
-//                    }
-//                    std::cout << " " << m_words[i].m_definition << std::endl;
-                } else {
-//                    std::cout << std::setw(indent) << " - ";
-//                    if (g_settings.m_verbose && m_words[i].m_pos != PartOfSpeech::Unknown) {
-//                        std::cout << "(" << [this](PartOfSpeech pos) {
-//                            switch (pos) {
-//                                case PartOfSpeech::Noun: return "noun";
-//                                case PartOfSpeech::Pronoun: return "pronoun";
-//                                case PartOfSpeech::Adjective: return "adjective";
-//                                case PartOfSpeech::Adverb: return "adverb";
-//                                case PartOfSpeech::Verb: return "verb";
-//                                case PartOfSpeech::Preposition: return "preposition";
-//                                case PartOfSpeech::Conjunction: return "conjunction";
-//                                case PartOfSpeech::Interjection: return "interjection";
-//                                default: return "";
-//                            }
-//                        }(m_words[i].m_pos) << ") ";
-//                    }
-//                    std::cout << m_words[i].m_definition << std::endl;
-                }
-                found = true;
-                if (!g_settings.m_show_all) {
-                    break;
-                }
-            }
+        if (!ffound){//no found
+            cout << "Word '" << word << "' was not found in the dictionary." << endl;
         }
-        if (!found) {
-            std::cout << "Word '" << word << "' was not found in the dictionary." << std::endl;
-        }*/
+
     }
 
-    ostream& operator<<(ostream &os, const Dictionary &dic) {
-        for (size_t i = 0; i < dic.m_size; ++i) {
-//            os << dic.m_words;
-        }
-        return os;
-    }
 
     string Dictionary::transferPTypeToString(const PartOfSpeech pos) const {
         switch(pos) {
@@ -217,13 +164,5 @@ namespace seneca{
         return PartOfSpeech::Unknown;
     }
 
-/*    void Dictionary::resize() {
 
-        Word* newWords = new Word[m_size + 1];
-        for (size_t i = 0; i < m_size; ++i) {
-            newWords[i] = m_words[i];
-        }
-        delete[] m_words;
-        m_words = newWords;
-    }*/
 }
