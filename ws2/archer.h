@@ -9,7 +9,7 @@
 #ifndef SENECA_ARCHER_H
 #define SENECA_ARCHER_H
 #include "health.h"
-#include "character.h"
+#include "characterTpl.h"
 
 using namespace std;
 

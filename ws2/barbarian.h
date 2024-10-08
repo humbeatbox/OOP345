@@ -5,7 +5,7 @@
 //Done on
 
 //
-#include "character.h"
+#include "characterTpl.h"
 #ifndef SENECA_BARBARIAN_H
 #define SENECA_BARBARIAN_H
 

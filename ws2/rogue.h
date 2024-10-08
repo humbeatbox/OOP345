@@ -8,7 +8,7 @@
 
 #ifndef SENECA_ROGUE_H
 #define SENECA_ROGUE_H
-#include "character.h"
+#include "characterTpl.h"
 #include "abilities.h"
 #include "weapons.h"
 

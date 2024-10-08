@@ -14,4 +14,5 @@ add_executable(ws2 main.cpp
         rogue.h
         abilities.h
         weapons.h
-        archer.h)
+        archer.h
+        characterTpl.h)
