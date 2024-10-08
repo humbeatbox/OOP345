@@ -3,7 +3,7 @@ project(ws2)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(ws2 main.cpp
+add_executable(ws2 tester_1.cpp
         health.h
         character.h
         team.cpp
