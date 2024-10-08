@@ -21,7 +21,7 @@ namespace seneca{
 
             //TODO: check what if team members is 0???
             //delete old members
-            for (int i = 0; i < m_size; ++i) {
+            for (size_t i = 0; i < m_size; ++i) {
                 delete m_members[i];
             }
             m_name = src.m_name;

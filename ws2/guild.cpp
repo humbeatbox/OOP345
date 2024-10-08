@@ -21,14 +21,14 @@ namespace seneca {
     Guild &Guild::operator=(const Guild &src) {
         if (this != &src) {//self assignment check
             //delete old membersœ
-            for (int i = 0; i < m_size; ++i) {
+            for (size_t i = 0; i < m_size; ++i) {
                 delete m_members[i];
             }
             delete[] m_members;
             m_members = nullptr;
             //deep copy
             m_members = new Character *[src.m_size];
-            for (int i = 0; i < src.m_size; ++i) {
+            for (size_t i = 0; i < src.m_size; ++i) {
                 m_members[i] = src.m_members[i]->clone();
             }
             //shallow copy
@@ -71,7 +71,7 @@ namespace seneca {
         //if the character is not in the team, add it to the team
         Character **tmp = new Character *[m_size + 1];
         //copy the old members to the new array
-        for (int i = 0; i < m_size; ++i) {
+        for (size_t i = 0; i < m_size; ++i) {
             tmp[i] = m_members[i];
         }
         //increase the max health of the character by 300 points
@@ -116,7 +116,7 @@ namespace seneca {
             cout << "No guild." << endl;
         } else {
             cout << "[Guild] " << m_name << endl;
-            for (int i = 0; i < m_size; ++i) {
+            for (size_t i = 0; i < m_size; ++i) {
                 cout << "    " << i + 1 << ": " << *m_members[i] << endl;
             }
         }

@@ -17,8 +17,8 @@ using namespace seneca;
 namespace seneca{
     template<typename T, typename FirstAbility_t,typename SecondAbility_t>
     class Rogue : public CharacterTpl<T> {
-        int m_baseDefense{};
         int m_baseAttack{};
+        int m_baseDefense{};
         FirstAbility_t m_firstAbility{};
         SecondAbility_t m_secondAbility{};
         seneca::Dagger m_weapon{};
