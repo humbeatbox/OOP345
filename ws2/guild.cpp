@@ -20,16 +20,13 @@ namespace seneca {
     //copy assignment
     Guild &Guild::operator=(const Guild &src) {
         if (this != &src) {//self assignment check
-            //delete old membersœ
-            for (size_t i = 0; i < m_size; ++i) {
-                delete m_members[i];
-            }
+
             delete[] m_members;
             m_members = nullptr;
             //deep copy
             m_members = new Character *[src.m_size];
             for (size_t i = 0; i < src.m_size; ++i) {
-                m_members[i] = src.m_members[i]->clone();
+                m_members[i] = src.m_members[i];
             }
             //shallow copy
             m_name = src.m_name;
