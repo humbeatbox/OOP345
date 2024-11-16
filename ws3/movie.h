@@ -6,7 +6,24 @@
 
 //
 
-#ifndef WS3_MOVIE_H
-#define WS3_MOVIE_H
+#ifndef SENECA_MOVIE_H
+#define SENECA_MOVIE_H
+#include "mediaItem.h"
+using namespace std;
+namespace seneca {
 
-#endif //WS3_MOVIE_H
+    class Movie : public MediaItem {
+//        title (inherited)
+//        the year of release (inherited)
+//        the summary (inherited)
+
+        //private constructor
+        Movie( const std::string &title, unsigned short year, const std::string &summary):MediaItem(title, summary, year) {};
+
+    public:
+        Movie* createItem(const std::string& strMovie);
+        void display(std::ostream& out) const override;
+    };
+
+}
+#endif //SENECA_MOVIE_H

@@ -6,7 +6,15 @@
 
 //
 
-#ifndef WS3_SETTINGS_H
-#define WS3_SETTINGS_H
+#ifndef SENECA_SETTINGS_H
+#define SENECA_SETTINGS_H
+namespace seneca {
+    struct Settings {
+        short m_maxSummaryWidth{80};
+        bool m_tableView{};
+    };
 
-#endif //WS3_SETTINGS_H
+    extern Settings g_settings;
+}
+
+#endif //SENECA_SETTINGS_H
