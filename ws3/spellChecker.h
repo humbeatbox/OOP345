@@ -6,7 +6,27 @@
 
 //
 
-#ifndef WS3_SPELLCHECKER_H
-#define WS3_SPELLCHECKER_H
+#ifndef SENECA_SPELLCHECKER_H
+#define SENECA_SPELLCHECKER_H
+#include <string>
+#include <iostream>
+using namespace std;
+namespace seneca {
+    class SpellChecker {
+        string m_badWords[6];
+        string m_goodWords[6];
+        size_t m_replacements[6] = {0};
 
-#endif //WS3_SPELLCHECKER_H
+    public:
+        // Constructor that loads bad/good words from a file
+        SpellChecker(const char* filename);
+
+        // Overloaded function call operator to correct text
+        void operator()(std::string& text);
+
+        // Function to display statistics of replacements
+        void showStatistics(std::ostream& out) const;
+    };
+}
+
+#endif //SENECA_SPELLCHECKER_H
