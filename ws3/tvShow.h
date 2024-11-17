@@ -11,6 +11,7 @@
 #include <string>
 #include <list>
 #include <sstream>
+#include <vector>
 #include "mediaItem.h"
 #include "settings.h"
 

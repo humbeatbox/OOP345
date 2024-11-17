@@ -75,9 +75,7 @@ namespace seneca {
             price = stod(priceStr);
             getline(stream, yearStr, ',');
             //convert the string year to int
-            /*
-             *
-             * */
+
             trim(yearStr);
             year = static_cast<unsigned short>(stoi(yearStr));
             getline(stream, summary);

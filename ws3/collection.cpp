@@ -104,7 +104,7 @@ namespace seneca {
     std::ostream& operator<<(std::ostream& out, const Collection& collection) {
         for (size_t i = 0; i < collection.size(); ++i) {
             if (collection[i]) {
-                out << *collection[i] << "\n";
+                out << *collection[i];
             }
         }
         return out;
