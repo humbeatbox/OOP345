@@ -4,6 +4,8 @@
 //2024-11-17 Creat this file
 //Done on
 
+//getEpisodeAverageLength ,accumulate
+//getLongEpisodes ,copy_if ,transform
 #include <iomanip>
 #include <sstream>
 #include <numeric>
@@ -89,13 +91,12 @@ namespace seneca {
             year = static_cast<unsigned short>(stoi(yearStr));
             getline(stream, summary);
             trim(summary);
-
-
         }
         catch (...)
         {
             throw "Not a valid show.";
         }
+        //episode will be added later
         return new TvShow(id, title, year, summary, episodes);
     }
 
@@ -104,7 +105,7 @@ namespace seneca {
         if (m_episodes.empty()){
             return 0.0; // Avoid division by zero
         }
-
+        //set sum to 0.0 then use accumulate to sum up all the length of the episodes
         double totalLength = accumulate(m_episodes.begin(), m_episodes.end(), 0.0,[](double sum, const TvEpisode &episode){
             return sum + episode.m_length;
         });
@@ -113,7 +114,7 @@ namespace seneca {
     }
 
     std::list<std::string> TvShow::getLongEpisodes() const{
-        std::list<TvEpisode> filteredEpisodes;
+        std::list<TvEpisode> filteredEpisodes{};
 
         // Filter episodes that are at least 1 hour (3600 seconds) long
         copy_if(m_episodes.begin(), m_episodes.end(), back_inserter(filteredEpisodes),[](const TvEpisode &episode){

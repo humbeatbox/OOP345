@@ -61,7 +61,7 @@ namespace seneca
             std::string showId{}, episodeNumStr{}, seasonStr{}, episodeInSeasonStr{}, airDate{}, lengthStr{}, title{}, summary{};
             unsigned short episodeNum{}, season{}, episodeInSeason{};
             unsigned int showLength{};
-
+        try{
             // 1.showID
             getline(stream, showId, ',');
             trim(showId);
@@ -95,18 +95,27 @@ namespace seneca
             {
                 showLength = std::stoi(lengthStr.substr(0, 2)) * 3600 + std::stoi(lengthStr.substr(3, 2)) * 60 + std::stoi(lengthStr.substr(6, 2));
             }
+        }
+       catch (...)
+       {
+           throw "Not a valid show.";
+       }
 
+
+            //check if the show is in the collection then break
             TvShow *show = nullptr;
             for (size_t i = 0; i < col.size(); ++i)
             {
                 TvShow *tvShow = dynamic_cast<TvShow *>(col[i]);
+                //compare the show id
                 if (tvShow &&  tvShow->m_id == stoi(showId))
                 {
                     show = tvShow;
                     break;
                 }
             }
-
+            //only handle the episode
+            //use createItem to create a new show
             TvEpisode episode = {show, episodeNum, season, episodeInSeason, airDate, showLength, title, summary};
             show->m_episodes.push_back(episode);
         }

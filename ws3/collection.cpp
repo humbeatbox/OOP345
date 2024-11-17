@@ -5,10 +5,16 @@
 //Done on
 
 //
-#include "collection.h"
+//operator[] ,find_if_not
+//operator+= ,find_if
+//removeQuotes() ,for_each
+//sort(const std::string& field) ,sort
+
 #include <stdexcept>
 #include <algorithm>
 #include <iomanip>
+#include <functional>
+#include "collection.h"
 
 namespace seneca {
     Collection::Collection(const std::string& name) : m_name(name) {}
@@ -35,7 +41,7 @@ namespace seneca {
         if (!item) {
             return *this;
         }
-        //check if item already exists or not
+        //check if item already exists or not using title
         auto it = std::find_if(m_items.begin(), m_items.end(), [item](const MediaItem* existingItem) {
             return existingItem->getTitle() == item->getTitle();
         });
@@ -62,55 +68,48 @@ namespace seneca {
 
 
     MediaItem* Collection::operator[](const std::string& title) const {
-        //TODO do not use grab by reference?
-//        auto it = std::find_if(m_items.begin(), m_items.end(), [&title](const MediaItem* item) {
-//            return item->getTitle() == title;
-//        });
-        auto it = std::find_if(m_items.begin(), m_items.end(), [title](const MediaItem* item) {
-            return item->getTitle() == title;
+        //reverse find_if
+        auto it = std::find_if_not(m_items.begin(), m_items.end(), [title](const MediaItem* item) {
+            return item->getTitle() != title;
         });
         return (it != m_items.end()) ? *it : nullptr;
     }
-
+    std::string Collection::trimQuotes(const std::string& str) {
+        if (str.length() > 1 && str.front() == '\"' && str.back() == '\"') {
+            return str.substr(1, str.length() - 2);
+        } else if (str.length() > 1 && str.front() == '\"') {
+            return str.substr(1);
+        } else if (str.length() > 1 && str.back() == '\"') {
+            return str.substr(0, str.length() - 1);
+        }
+        return str;
+    }
     void Collection::removeQuotes() {
         std::for_each(m_items.begin(), m_items.end(), [](MediaItem* item) {
-            auto title = item->getTitle();
-            auto summary = item->getSummary();
-
-            // Remove quotes from title if they are present at both ends and the length is greater than 1
-            if (!title.empty() && title.front() == '\"' && title.back() == '\"' && title.length() > 1) {
-                item->setTitle(title.substr(1, title.length() - 2));
-            } else if (!title.empty() && title.front() == '\"' && title.length() > 1) {
-                item->setTitle(title.substr(1));
-            } else if (!title.empty() && title.back() == '\"' && title.length() > 1) {
-                item->setTitle(title.substr(0, title.length() - 1));
-            }
-
-            // Remove quotes from summary if they are present at both ends and the length is greater than 1
-            if (!summary.empty() && summary.front() == '\"' && summary.back() == '\"' && summary.length() > 1) {
-                item->setSummary(summary.substr(1, summary.length() - 2));
-            }else if (!summary.empty() && summary.front() == '\"' && summary.length() > 1) {
-                item->setSummary(summary.substr(1));
-            }else if (!summary.empty() && summary.back() == '\"' && summary.length() > 1) {
-                item->setSummary(summary.substr(0, summary.length() - 1));
-            }
+            item->setTitle(trimQuotes(item->getTitle()));
+            item->setSummary(trimQuotes(item->getSummary()));
         });
     }
 
     void Collection::sort(const std::string& field) {
+        //std::function for saving a lambda function prevent code duplication
+        std::function<bool(const MediaItem*, const MediaItem*)> comparator{};
+
         if (field == "title") {
-            std::sort(m_items.begin(), m_items.end(), [](const MediaItem* a, const MediaItem* b) {
-                return a->getTitle() < b->getTitle();
-            });
+            comparator = [](const MediaItem* first, const MediaItem* second) {
+                return first->getTitle() < second->getTitle();
+            };
         } else if (field == "year") {
-            std::sort(m_items.begin(), m_items.end(), [](const MediaItem* a, const MediaItem* b) {
-                return a->getYear() < b->getYear();
-            });
-        }else if(field== "summary"){
-            std::sort(m_items.begin(), m_items.end(), [](const MediaItem* a, const MediaItem* b) {
-                return a->getSummary() < b->getSummary();
-            });
+            comparator = [](const MediaItem* first, const MediaItem* second) {
+                return first->getYear() < second->getYear();
+            };
+        } else if (field == "summary") {
+            comparator = [](const MediaItem* first, const MediaItem* second) {
+                return first->getSummary() < second->getSummary();
+            };
         }
+
+        std::sort(m_items.begin(), m_items.end(), comparator);
     }
     std::ostream& operator<<(std::ostream& out, const Collection& collection) {
         for (size_t i = 0; i < collection.size(); ++i) {

@@ -45,6 +45,7 @@ namespace seneca {
         MediaItem* operator[](const std::string& title) const;
 
         // Utility methods
+        static std::string trimQuotes(const std::string& str);
         void removeQuotes();
         void sort(const std::string& field);
         friend std::ostream& operator<<(std::ostream& out, const Collection& collection);
