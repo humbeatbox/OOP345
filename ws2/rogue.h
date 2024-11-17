@@ -23,7 +23,7 @@ namespace seneca{
         SecondAbility_t m_secondAbility{};
         seneca::Dagger m_weapon{};
     public:
-        Rogue(const char* name, int healthMax, int baseAttack, int baseDefense):CharacterTpl<T>(name, healthMax), m_baseAttack{baseAttack}, m_baseDefense{baseDefense} {}
+        Rogue(const char* name, int healthMax, int baseAttack, int baseDefense):CharacterTpl<T>{name, healthMax}, m_baseAttack{baseAttack}, m_baseDefense{baseDefense} {}
 
         //TODO: copy constructor for clone
         Rogue(const Rogue& src):CharacterTpl<T>(src){
