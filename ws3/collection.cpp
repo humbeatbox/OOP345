@@ -77,11 +77,22 @@ namespace seneca {
             auto title = item->getTitle();
             auto summary = item->getSummary();
 
-            if (!title.empty() && title.front() == '\"' && title.back() == '\"') {
+            // Remove quotes from title if they are present at both ends and the length is greater than 1
+            if (!title.empty() && title.front() == '\"' && title.back() == '\"' && title.length() > 1) {
                 item->setTitle(title.substr(1, title.length() - 2));
+            } else if (!title.empty() && title.front() == '\"' && title.length() > 1) {
+                item->setTitle(title.substr(1));
+            } else if (!title.empty() && title.back() == '\"' && title.length() > 1) {
+                item->setTitle(title.substr(0, title.length() - 1));
             }
-            if (!summary.empty() && summary.front() == '\"' && summary.back() == '\"') {
+
+            // Remove quotes from summary if they are present at both ends and the length is greater than 1
+            if (!summary.empty() && summary.front() == '\"' && summary.back() == '\"' && summary.length() > 1) {
                 item->setSummary(summary.substr(1, summary.length() - 2));
+            }else if (!summary.empty() && summary.front() == '\"' && summary.length() > 1) {
+                item->setSummary(summary.substr(1));
+            }else if (!summary.empty() && summary.back() == '\"' && summary.length() > 1) {
+                item->setSummary(summary.substr(0, summary.length() - 1));
             }
         });
     }
