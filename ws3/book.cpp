@@ -8,12 +8,10 @@
 
 
 #include <sstream>
-#include <algorithm>
 #include <stdexcept>
-//#include <string>
 #include "book.h"
 #include "mediaItem.h"
-using namespace std;
+
 namespace seneca {
     Book::Book(const std::string& author, const std::string& title, const std::string& country, double price, unsigned short year, const std::string& summary)
             :MediaItem(title, summary, year), m_author(author), m_country(country), m_price(price) {};
@@ -60,8 +58,8 @@ namespace seneca {
             throw "Not a valid book.";
         }
         //looks usgin istringstream make life easier instead of find and substr
-        istringstream stream(strBook);
-        string author{}, title{}, country{}, priceStr{}, yearStr{}, summary{};
+        std::istringstream stream(strBook);
+        std::string author{}, title{}, country{}, priceStr{}, yearStr{}, summary{};
         double price{};
         unsigned short year{};
         try {
@@ -82,10 +80,10 @@ namespace seneca {
              * */
             trim(yearStr);
             year = static_cast<unsigned short>(stoi(yearStr));
-            getline(stream, summary, ',');
+            getline(stream, summary);
             trim(summary);
         }catch(...) {
-            cout << "Error in parsing the book." << endl;
+            std::cout << "Error in parsing the book." << std::endl;
         }
         //all good then use the private constructor to create a new book
         return new Book(author, title, country, price, year, summary);

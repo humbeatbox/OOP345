@@ -9,7 +9,7 @@
 #include <sstream>
 #include "movie.h"
 #include "settings.h"
-using namespace std;
+
 namespace seneca{
     //provided function
     void Movie::display(std::ostream& out) const
@@ -48,13 +48,13 @@ namespace seneca{
         }
     }
 
-    Movie* Movie::createItem(const string &strMovie) {
+    Movie* Movie::createItem(const std::string &strMovie) {
         if (strMovie.empty() || strMovie[0] == '#') {
             throw "Not a valid movie.";
         }
         //instead of using find and substr, I use istringstream to get the title, year, and summary
-        istringstream stream(strMovie);
-        string title{}, yearStr{}, summary{};
+        std::istringstream stream(strMovie);
+        std::string title{}, yearStr{}, summary{};
         unsigned short year{};
         try {
             getline(stream, title, ',');

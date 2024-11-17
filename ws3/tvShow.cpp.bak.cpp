@@ -1,20 +1,21 @@
-//Name:Hsiao-Kang Chang 
-//Seneca email:hchang67@myseneca.ca
-//Seneca Student ID:120049234
-//2024-11-17 Creat this file
-//Done on
+// Name:Hsiao-Kang Chang
+// Seneca email:hchang67@myseneca.ca
+// Seneca Student ID:120049234
+// 2024-11-09 Creat this file
+// Done on
 
+//
 #include <iomanip>
 #include <sstream>
 #include <numeric>
 #include <algorithm>
 #include "tvShow.h"
-
-namespace seneca {
+namespace seneca
+{
     TvShow::TvShow(const int id, const std::string &title, unsigned short year, const std::string &summary, const std::vector<TvEpisode>& episodes)
-            : MediaItem(title, summary, year), m_id(id), m_episodes(episodes) {}
+        : MediaItem(title, summary, year), m_id(id), m_episodes(episodes) {}
 
-    void TvShow::display(std::ostream& out) const
+    void TvShow::display(std::ostream &out) const
     {
         if (g_settings.m_tableView)
         {
@@ -46,7 +47,7 @@ namespace seneca {
                 out << "    " << this->getSummary().substr(pos, g_settings.m_maxSummaryWidth) << '\n';
                 pos += g_settings.m_maxSummaryWidth;
             }
-            for (auto& item : m_episodes)
+            for (auto &item : m_episodes)
             {
                 out << std::setfill('0') << std::right;
                 out << "    " << 'S' << std::setw(2) << item.m_season
@@ -68,8 +69,7 @@ namespace seneca {
         }
     }
 
-    // Factory function implementation
-    TvShow* TvShow::createItem(const std::string& strShow) {
+    TvShow *TvShow::createItem(const std::string &strShow){
         if (strShow.empty() || strShow[0] == '#'){
             throw "Not a valid show.";
         }
@@ -89,8 +89,6 @@ namespace seneca {
             year = static_cast<unsigned short>(stoi(yearStr));
             getline(stream, summary);
             trim(summary);
-
-
         }
         catch (...)
         {
@@ -98,7 +96,6 @@ namespace seneca {
         }
         return new TvShow(id, title, year, summary, episodes);
     }
-
 
     double TvShow::getEpisodeAverageLength() const{
         if (m_episodes.empty()){
@@ -117,27 +114,17 @@ namespace seneca {
 
         // Filter episodes that are at least 1 hour (3600 seconds) long
         copy_if(m_episodes.begin(), m_episodes.end(), back_inserter(filteredEpisodes),[](const TvEpisode &episode){
-            return episode.m_length >= 3600;
+                    return episode.m_length >= 3600;
         });
 
         std::list<std::string> longEpisodes;
 
         // Transform filtered episodes to extract the titles
         transform(filteredEpisodes.begin(), filteredEpisodes.end(), back_inserter(longEpisodes),[](const TvEpisode &episode){
-            return episode.m_title;
+                      return episode.m_title;
         });
 
         return longEpisodes;
     }
 
 }
-
-
-
-
-
-
-
-
-
-

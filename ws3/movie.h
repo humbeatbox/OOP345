@@ -9,7 +9,7 @@
 #ifndef SENECA_MOVIE_H
 #define SENECA_MOVIE_H
 #include "mediaItem.h"
-using namespace std;
+
 namespace seneca {
 
     class Movie : public MediaItem {
@@ -21,7 +21,7 @@ namespace seneca {
         Movie( const std::string &title, unsigned short year, const std::string &summary):MediaItem(title, summary, year) {};
 
     public:
-        Movie* createItem(const std::string& strMovie);
+        static Movie* createItem(const std::string& strMovie);
         void display(std::ostream& out) const override;
     };
 

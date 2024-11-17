@@ -10,11 +10,11 @@
 #define SENECA_SPELLCHECKER_H
 #include <string>
 #include <iostream>
-using namespace std;
+
 namespace seneca {
     class SpellChecker {
-        string m_badWords[6];
-        string m_goodWords[6];
+        std::string m_badWords[6];
+        std::string m_goodWords[6];
         size_t m_replacements[6] = {0};
 
     public:
