@@ -55,28 +55,29 @@ namespace seneca {
         } else {
             delete item; // Prevent memory leak if item already exists
         }
-
         return *this;
     }
 
     MediaItem* Collection::operator[](size_t idx) const {
         if (idx >= m_items.size()) {
+            //need to use put_of_range exception
             throw std::out_of_range("Bad index [" + std::to_string(idx) + "]. Collection has [" + std::to_string(m_items.size()) + "] items.");
         }
         return m_items[idx];
     }
 
-
     MediaItem* Collection::operator[](const std::string& title) const {
-        //reverse find_if
+        //reverse find_if =) because I can come up with any other easy STL function
         auto it = std::find_if_not(m_items.begin(), m_items.end(), [title](const MediaItem* item) {
             return item->getTitle() != title;
         });
         return (it != m_items.end()) ? *it : nullptr;
     }
+
     std::string Collection::trimQuotes(const std::string& str) {
         if (str.length() > 1 && str.front() == '\"' && str.back() == '\"') {
             return str.substr(1, str.length() - 2);
+        //need to consider only one quote
         } else if (str.length() > 1 && str.front() == '\"') {
             return str.substr(1);
         } else if (str.length() > 1 && str.back() == '\"') {
@@ -84,6 +85,7 @@ namespace seneca {
         }
         return str;
     }
+
     void Collection::removeQuotes() {
         std::for_each(m_items.begin(), m_items.end(), [](MediaItem* item) {
             item->setTitle(trimQuotes(item->getTitle()));
@@ -108,7 +110,7 @@ namespace seneca {
                 return first->getSummary() < second->getSummary();
             };
         }
-
+        //call the sort function with specific comparator
         std::sort(m_items.begin(), m_items.end(), comparator);
     }
     std::ostream& operator<<(std::ostream& out, const Collection& collection) {

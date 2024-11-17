@@ -17,7 +17,7 @@ namespace seneca {
             : MediaItem(title, summary, year), m_id(id), m_episodes(episodes) {}
 
     void TvShow::display(std::ostream& out) const
-    {
+{
         if (g_settings.m_tableView)
         {
             out << "S | ";
@@ -91,9 +91,7 @@ namespace seneca {
             year = static_cast<unsigned short>(stoi(yearStr));
             getline(stream, summary);
             trim(summary);
-        }
-        catch (...)
-        {
+        }catch (...){
             throw "Not a valid show.";
         }
         //episode will be added later
@@ -109,20 +107,16 @@ namespace seneca {
         double totalLength = accumulate(m_episodes.begin(), m_episodes.end(), 0.0,[](double sum, const TvEpisode &episode){
             return sum + episode.m_length;
         });
-
         return totalLength / m_episodes.size();
     }
 
     std::list<std::string> TvShow::getLongEpisodes() const{
         std::list<TvEpisode> filteredEpisodes{};
-
         // Filter episodes that are at least 1 hour (3600 seconds) long
         copy_if(m_episodes.begin(), m_episodes.end(), back_inserter(filteredEpisodes),[](const TvEpisode &episode){
             return episode.m_length >= 3600;
         });
-
         std::list<std::string> longEpisodes;
-
         // Transform filtered episodes to extract the titles
         transform(filteredEpisodes.begin(), filteredEpisodes.end(), back_inserter(longEpisodes),[](const TvEpisode &episode){
             return episode.m_title;
@@ -130,7 +124,6 @@ namespace seneca {
 
         return longEpisodes;
     }
-
 }
 
 

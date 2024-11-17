@@ -15,8 +15,7 @@
 #include "mediaItem.h"
 #include "settings.h"
 
-namespace seneca
-{
+namespace seneca{
     class TvShow; // early declaration for TvEpisode can recognize TvShow
 
     // provided struct
@@ -32,10 +31,7 @@ namespace seneca
         std::string m_summary{};
     };
 
-    class TvShow : public MediaItem
-    {
-
-
+    class TvShow : public MediaItem{
         int m_id{};
         //        title (inherited)
         //        the year of release (inherited)
@@ -49,11 +45,9 @@ namespace seneca
 
         void display(std::ostream &out) const override;
 
-       template <typename Collection_t>
-        static void addEpisode(Collection_t &col, const std::string &strEpisode)
-        {
-            if (strEpisode.empty() || strEpisode[0] == '#')
-            {
+        template <typename Collection_t>
+        static void addEpisode(Collection_t &col, const std::string &strEpisode){
+            if (strEpisode.empty() || strEpisode[0] == '#'){
                 throw "Not a valid episode.";
             }
 
@@ -61,55 +55,49 @@ namespace seneca
             std::string showId{}, episodeNumStr{}, seasonStr{}, episodeInSeasonStr{}, airDate{}, lengthStr{}, title{}, summary{};
             unsigned short episodeNum{}, season{}, episodeInSeason{};
             unsigned int showLength{};
-        try{
-            // 1.showID
-            getline(stream, showId, ',');
-            trim(showId);
-            // 2.episode
-            getline(stream, episodeNumStr, ',');
-            trim(episodeNumStr);
-            episodeNum = static_cast<unsigned short>(std::stoi(episodeNumStr));
-            // 3.seasonNum
-            getline(stream, seasonStr, ',');
-            trim(seasonStr);
-            season = seasonStr.empty() ? 1 : static_cast<unsigned short>(std::stoi(seasonStr));
-            // 4.episodeInSeason
-            getline(stream, episodeInSeasonStr, ',');
-            trim(episodeInSeasonStr);
-            episodeInSeason = static_cast<unsigned short>(std::stoi(episodeInSeasonStr));
-            // 5.airDate
-            getline(stream, airDate, ',');
-            trim(airDate);
-            // 6.length
-            getline(stream, lengthStr, ',');
-            trim(lengthStr);
-            // 7.episode title
-            getline(stream, title, ',');
-            trim(title);
-            // 8.episode summary
-            getline(stream, summary);
-            trim(summary);
+            TvShow *show{};
+            try{
+                // 1.showID
+                getline(stream, showId, ',');
+                trim(showId);
+                // 2.episode
+                getline(stream, episodeNumStr, ',');
+                trim(episodeNumStr);
+                episodeNum = static_cast<unsigned short>(std::stoi(episodeNumStr));
+                // 3.seasonNum
+                getline(stream, seasonStr, ',');
+                trim(seasonStr);
+                season = seasonStr.empty() ? 1 : static_cast<unsigned short>(std::stoi(seasonStr));
+                // 4.episodeInSeason
+                getline(stream, episodeInSeasonStr, ',');
+                trim(episodeInSeasonStr);
+                episodeInSeason = static_cast<unsigned short>(std::stoi(episodeInSeasonStr));
+                // 5.airDate
+                getline(stream, airDate, ',');
+                trim(airDate);
+                // 6.length
+                getline(stream, lengthStr, ',');
+                trim(lengthStr);
+                // 7.episode title
+                getline(stream, title, ',');
+                trim(title);
+                // 8.episode summary
+                getline(stream, summary);
+                trim(summary);
 
-            // convert lengthStr to unsigned
-            if (!lengthStr.empty())
-            {
-                showLength = std::stoi(lengthStr.substr(0, 2)) * 3600 + std::stoi(lengthStr.substr(3, 2)) * 60 + std::stoi(lengthStr.substr(6, 2));
-            }
-        }
-       catch (...)
-       {
-           throw "Not a valid show.";
-       }
-
+                // convert lengthStr to unsigned
+                if (!lengthStr.empty()){
+                    showLength = std::stoi(lengthStr.substr(0, 2)) * 3600 + std::stoi(lengthStr.substr(3, 2)) * 60 + std::stoi(lengthStr.substr(6, 2));
+                }
+            }catch (...){
+               throw "Not a valid show.";
+           }
 
             //check if the show is in the collection then break
-            TvShow *show = nullptr;
-            for (size_t i = 0; i < col.size(); ++i)
-            {
+            for (size_t i = 0; i < col.size(); ++i){
                 TvShow *tvShow = dynamic_cast<TvShow *>(col[i]);
                 //compare the show id
-                if (tvShow &&  tvShow->m_id == stoi(showId))
-                {
+                if (tvShow &&  tvShow->m_id == stoi(showId)){
                     show = tvShow;
                     break;
                 }
@@ -119,7 +107,6 @@ namespace seneca
             TvEpisode episode = {show, episodeNum, season, episodeInSeason, airDate, showLength, title, summary};
             show->m_episodes.push_back(episode);
         }
-
     };
 }
 #endif // SENECA_TVSHOW_H

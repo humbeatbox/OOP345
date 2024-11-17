@@ -15,16 +15,11 @@ namespace seneca {
     class SpellChecker {
         std::string m_badWords[6];
         std::string m_goodWords[6];
-        size_t m_replacements[6] = {0};
+        size_t m_replacements[6]{};
 
     public:
-        // Constructor that loads bad/good words from a file
         SpellChecker(const char* filename);
-
-        // Overloaded function call operator to correct text
         void operator()(std::string& text);
-
-        // Function to display statistics of replacements
         void showStatistics(std::ostream& out) const;
     };
 }

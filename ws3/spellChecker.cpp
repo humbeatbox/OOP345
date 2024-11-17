@@ -18,13 +18,12 @@ namespace seneca {
         if (!file) {
             throw "Bad file name!";
         }
-        std::string line;
-        size_t index = 0;
 
-        while (std::getline(file, line) && index < 6) {
+        std::string line{};
+        for (auto index = 0; index < 6 && std::getline(file, line); ++index) {
             std::istringstream stream(line);
+            //it will directly read the bad word and good word from the file and remove the space
             stream >> m_badWords[index] >> m_goodWords[index];
-            index++;
         }
     }
 

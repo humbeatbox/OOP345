@@ -9,10 +9,11 @@
 #ifndef SENECA_BOOK_H
 #define SENECA_BOOK_H
 #include <string>
-#include "mediaItem.h"
-#include "settings.h"
 #include <iostream>
 #include <iomanip>
+#include "mediaItem.h"
+#include "settings.h"
+
 
 namespace seneca {
     class Book : public MediaItem {
