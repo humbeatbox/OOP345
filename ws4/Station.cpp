@@ -32,8 +32,6 @@ namespace seneca{
         //extract the description
         m_description = ut.extractToken(record, next_pos, more);
 
-
-        std::cout << "m_widthField: " << m_widthField;
     }
 
     const std::string &Station::getItemName() const {

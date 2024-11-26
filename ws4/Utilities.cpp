@@ -28,7 +28,7 @@ namespace seneca {
     //extracts a token from string str referred to by the first parameter.
     std::string Utilities::extractToken(const std::string& str, size_t& next_pos, bool& more) {
 
-        //if a delimiter is found at next_pos.
+        //if a delimiter is found at next_pos (first position)
         if (str[next_pos] == m_delimiter) {
             more = false;
             throw "Delimiter found at next_pos";

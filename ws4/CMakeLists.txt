@@ -7,4 +7,6 @@ add_executable(ws4 main.cpp
         Station.cpp
         Station.h
         Utilities.cpp
-        Utilities.h)
+        Utilities.h
+        CustomerOrder.cpp
+        CustomerOrder.h)
