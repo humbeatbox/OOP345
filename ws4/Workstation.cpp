@@ -18,16 +18,9 @@ namespace seneca{
     //this modifier fills the order at the front of the queue
     //if there are CustomerOrders in the queue; otherwise, does nothing.
     void Workstation::fill(std::ostream &os) {
-        //if there are CustomerOrders in the queue
         if (!m_orders.empty()) {
-            //fill this order
             m_orders.front().fillItem(*this, os);
         }
-        if (m_orders.empty()) {
-            return;
-        }
-
-//        m_orders.front().fillItem(*this, os);
     }
 
     //this modifier stores the address of the referenced Workstation object
@@ -58,15 +51,12 @@ namespace seneca{
             if (m_pNextStation) {
                 *m_pNextStation += std::move(currentOrder);
             } else {
-
                 bool is_filled = currentOrder.isOrderFilled();
                 if (is_filled) {
                     g_completed.push_back(std::move(currentOrder));
                 } else {
                     g_incomplete.push_back(std::move(currentOrder));
                 }
-
-
             }
             m_orders.pop_front();
             return true;

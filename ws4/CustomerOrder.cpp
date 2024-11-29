@@ -96,7 +96,7 @@ namespace seneca{
     }
 
     bool CustomerOrder::isOrderFilled() const {
-        for (auto i = 0; i < m_cntItem; i++) {
+        for (size_t i = 0; i < m_cntItem; i++) {
             if (!m_lstItem[i]->m_isFilled) {
                 return false;
             }
@@ -108,7 +108,7 @@ namespace seneca{
 
         //not exist and (exist and fulfilled) return true
         //exist and not fulfilled return false
-        for (auto i = 0; i < m_cntItem; i++) {
+        for (size_t i = 0; i < m_cntItem; i++) {
             if (m_lstItem[i]->m_itemName == itemName) {
                 //exist and not fulfilled
                 if (!m_lstItem[i]->m_isFilled) {
@@ -134,13 +134,12 @@ namespace seneca{
                     //special output
                     os << "    Filled " << m_name << ", " << m_product << " ["
                        << m_lstItem[i]->m_itemName << "]" << std::endl;
-//                    return;
+                    return;
                 }
                 else {
                     os << "    Unable to fill " << m_name << ", " << m_product
                        << " [" << m_lstItem[i]->m_itemName << "]" << std::endl;
                 }
-                return;//TODO fill only one item
             }
         }
     }

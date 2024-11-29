@@ -79,64 +79,33 @@ namespace seneca {
                 break;
             }
         }
-
-
         Workstation *current = m_firstStation;
         while (current != nullptr) {
             ordered.push_back(current);
             current = current->getNextStation();
         }
-
-
         m_activeLine = ordered;
     }
-//    bool LineManager::run(std::ostream& os) {
-//        static size_t iteration_count = 0;
-//        iteration_count++;
-//
-//        os << "Line Manager Iteration: " << iteration_count << std::endl;
-//        if (!g_pending.empty()) {
-//            *m_firstStation += std::move(g_pending.front());
-//            g_pending.pop_front();
-//        }
-//
-//        for (auto* station : m_activeLine) {
-//            station->fill(os);
-//        }
-//
-//        for (auto* station : m_activeLine) {
-//            station->attemptToMoveOrder();
-//        }
-//
-//        // 只有當所有訂單都到達最終狀態時才返回true
-//        return g_pending.empty() &&
-//               (g_completed.size() + g_incomplete.size()) == m_cntCustomerOrder;
-//
-//    }
+
     bool LineManager::run(std::ostream& os) {
         static size_t iteration = 0;
         iteration++;
 
         os << "Line Manager Iteration: " << iteration << std::endl;
 
-        // 如果有待处理订单，移动一个到第一个工作站
         if (!g_pending.empty()) {
             *m_firstStation += std::move(g_pending.front());
             g_pending.pop_front();
         }
 
-        // 对每个工作站执行填充操作
         for (auto* station : m_activeLine) {
             station->fill(os);
         }
 
-        // 尝试将订单移至下一工作站
         for (auto* station : m_activeLine) {
             station->attemptToMoveOrder();
         }
 
-        // 检查是否所有订单都已处理完成
-        // 当所有订单都完成(在g_completed或g_incomplete中)时返回true
         return g_pending.empty() &&
                (g_completed.size() + g_incomplete.size()) == m_cntCustomerOrder;
     }
