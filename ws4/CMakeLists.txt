@@ -9,4 +9,8 @@ add_executable(ws4 main.cpp
         Utilities.cpp
         Utilities.h
         CustomerOrder.cpp
-        CustomerOrder.h)
+        CustomerOrder.h
+        Workstation.cpp
+        Workstation.h
+        LineManager.cpp
+        LineManager.h)

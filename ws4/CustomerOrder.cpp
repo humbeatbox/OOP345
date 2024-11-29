@@ -101,7 +101,7 @@ namespace seneca{
                 return false;
             }
         }
-        return false;
+        return true;
     }
 
     bool CustomerOrder::isItemFilled(const std::string &itemName) const {
@@ -134,12 +134,13 @@ namespace seneca{
                     //special output
                     os << "    Filled " << m_name << ", " << m_product << " ["
                        << m_lstItem[i]->m_itemName << "]" << std::endl;
-                    return;
+//                    return;
                 }
                 else {
                     os << "    Unable to fill " << m_name << ", " << m_product
                        << " [" << m_lstItem[i]->m_itemName << "]" << std::endl;
                 }
+                return;//TODO fill only one item
             }
         }
     }
