@@ -5,15 +5,14 @@
 //Done on
 
 //
-
-#include "LineManager.h"
 #include <iostream>
 #include <fstream>
 #include <algorithm>
-#include "LineManager.h"
 #include "Utilities.h"
+#include "LineManager.h"
 
 namespace seneca {
+
     LineManager::LineManager(const std::string &file, const std::vector<Workstation *> &stations) {
         try {
             std::ifstream input(file);
@@ -22,32 +21,28 @@ namespace seneca {
             }
 
             Utilities util;
-            std::string record;
+            std::string record;//the whole life form file
 
-            // 關鍵改變：完全按照檔案順序處理每一行
-            while (std::getline(input, record)) {
+
+            while (std::getline(input, record)) {//each line (one while loop)
                 size_t pos = 0;
                 bool more = true;
 
-                // 讀取當前工作站名稱
+                //use the extractToken to extract the station name and set the more flag
                 std::string current_name = util.extractToken(record, pos, more);
 
-                // 在 stations 中找到對應的工作站
-                auto current = std::find_if(stations.begin(), stations.end(),
-                                            [&](Workstation* ws) { return ws->getItemName() == current_name; });
+                //find the iterator of the current station
+                auto current = std::find_if(stations.begin(), stations.end(),[&](Workstation* ws) { return ws->getItemName() == current_name; });
 
-                if (current != stations.end()) {
-                    // 將當前工作站添加到 m_activeLine
+                if (current != stations.end()) {//not ned of this line (have other
                     m_activeLine.push_back(*current);
 
-                    // 如果有下一個工作站，設定連接
                     if (more) {
                         std::string next_name = util.extractToken(record, pos, more);
-                        auto next = std::find_if(stations.begin(), stations.end(),
-                                                 [&](Workstation* ws) { return ws->getItemName() == next_name; });
+                        auto next = std::find_if(stations.begin(), stations.end(),[&](Workstation* ws) { return ws->getItemName() == next_name;});
 
                         if (next != stations.end()) {
-                            (*current)->setNextStation(*next);
+                            (*current)->setNextStation(*next);//go to the next station
                         }
                     }
                 }
@@ -59,26 +54,28 @@ namespace seneca {
             throw msg;
         }
     }
-
+//    void LineManager::reorderStations(){
+//        m_firstStation = *std::find_if(m_activeLine.begin(), m_activeLine.end(),
+//                                       [](Workstation* ws) { return ws->getNextStation() == nullptr; });
+//    }
     void LineManager::reorderStations() {
 
-        std::vector<Workstation *> ordered;
-        std::vector<bool> added(m_activeLine.size(), false);
-
-
-        for (auto *first_candidate: m_activeLine) {
-            bool is_first = true;
-            for (auto *station: m_activeLine) {
+        for (auto *first_candidate: m_activeLine) {//checkt all sttion
+            bool first = true;//default is the first station
+            for (auto *station: m_activeLine) {//if the station is not the first station
                 if (station->getNextStation() == first_candidate) {
-                    is_first = false;
+                    first = false;
                     break;
                 }
             }
-            if (is_first) {
+            //if the station is the first station set to the first station
+            if (first) {
                 m_firstStation = first_candidate;
                 break;
             }
         }
+        //order
+        std::vector<Workstation *> ordered;
         Workstation *current = m_firstStation;
         while (current != nullptr) {
             ordered.push_back(current);
@@ -89,7 +86,7 @@ namespace seneca {
 
     bool LineManager::run(std::ostream& os) {
         static size_t iteration = 0;
-        iteration++;
+        iteration++;//need to add the iteration first
 
         os << "Line Manager Iteration: " << iteration << std::endl;
 

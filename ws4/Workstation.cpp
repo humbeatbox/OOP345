@@ -42,22 +42,23 @@ namespace seneca{
 
     bool Workstation::attemptToMoveOrder() {
         if (m_orders.empty()) {
-            return false;
+            return false;//otherwise do nothing
         }
 
         CustomerOrder& currentOrder = m_orders.front();
 
-        if (currentOrder.isItemFilled(getItemName()) || getQuantity() <= 0) {
+        if (currentOrder.isItemFilled(getItemName()) || getQuantity() <= 0) {//no more service or cannot be filled
             if (m_pNextStation) {
                 *m_pNextStation += std::move(currentOrder);
-            } else {
+            } else {//no next station
                 bool is_filled = currentOrder.isOrderFilled();
-                if (is_filled) {
+                if (is_filled) {//move to completed
                     g_completed.push_back(std::move(currentOrder));
-                } else {
+                } else {//move to incomplete
                     g_incomplete.push_back(std::move(currentOrder));
                 }
             }
+            //pop this order
             m_orders.pop_front();
             return true;
         }
